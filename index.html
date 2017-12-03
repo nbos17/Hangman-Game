@@ -16,12 +16,13 @@
 
 
   <div class="Game"><h2>Guesses Left:  </h2><span style= "font-size: 30px;"  id="Lives"></span></div>
-  <div class="Game"><h2>Letters Guessed:   </h2><span id="mydiv"></div>
+  <div class="Game"><h2>Letters Guessed:   </h2><span id="mydiv"></span></div>
   <div class="Game"><h2>Word:  </h2><span style= "font-size: 30px;" id="word"></span></div>
   <div id="correct"></div>
-  <div class="win">Hangman Challenge</div>
-  <button id="begin" onclick="playGame()">Start</button>
-  <button id="reset" onclick="reset()">Reset</button>
+  <br>
+  <div class="win"><h2>Wins</h2><span id="win" style= "font-size: 30px;"></span></div>
+  <!-- <button id="begin" onclick="playGame()">Start</button> -->
+  <button id="reset" onclick="reset()">New Word</button>
 
 <!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
   <script type="text/javascript">
@@ -66,7 +67,8 @@
 			else {
 				incorrect.push(guess);
 				letterTyped.innerHTML = incorrect;
-				console.log(guess);
+				//console.log(guess);
+
 				if (computerChoice.indexOf(guess) != -1) {
 					for (var j = 0; j < computerChoice.length; j++) {
 						if (computerChoice[j] === guess) {
@@ -74,6 +76,7 @@
 							words.innerHTML = blank.join(' ');
 							//correctness.innerHTML = correctGuesses;
 							correctGuesses++;
+							gameOver();
 						}				
 					}
 				}
@@ -108,6 +111,8 @@
 		blank.length = 0;
 		word.innerHTML = " ";
 		letterTyped.innerHTML = incorrect;
+		correctGuesses = 0;
+		playGame();
 	}
 
 	function newWord() {
