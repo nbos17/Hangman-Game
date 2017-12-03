@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hangman Game</title>
+</head>
+<body>
+
+  <h1>Hangman</h1>
+  <hr>
+
+
+  <div>Guesses Left:  <span id="Lives"></span></div>
+  <div id="mydiv"></div>
+  <div id="word"></div>
+  <div id="correct"></div>
+
+<!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+  <script type="text/javascript">
+
+    //write to HTML divs
+    var words = document.getElementById("word");
+    var letterTyped = document.getElementById("mydiv");
+    var score = document.getElementById("Lives");
+    var correctness = document.getElementById("correct");
+
+
+    //declare variables
+    var blank = [];
+    var incorrect = [];
+    var lives = 10;
+    score.innerHTML = lives;
+    var correctGuesses = 0;
+	var userGuess = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+	var wordList= ["met", "horses", "help"];
+
+	//create blanks for random word
+	var rand = wordList[Math.floor(Math.random() * wordList.length)];
+	var computerChoice = rand.split("");
+    	for (i = 0; i < computerChoice.length; i++ ) {
+    		blank.push(" __ ");
+    		words.innerHTML = blank;
+    	}   
+	//check user guess against computer function
+	document.onkeyup = function(event) {
+		var guess = event.key; 
+		if (userGuess.indexOf(guess) <= -1) {
+			alert("Not a valid input");
+		}
+		else {
+			letterTyped.innerHTML = guess;
+		}
+
+		if (computerChoice.indexOf(guess) != -1) {
+			for (var j = 0; j < computerChoice.length; j++) {
+				if (computerChoice[j] === guess) {
+					blank [j] = guess;
+					words.innerHTML = blank;
+					correctGuesses++;
+					correctness.innerHTML = correctGuesses;
+					console.log(correctGuesses);
+				}				
+			}
+		}
+		else {
+			lives--;
+			score.innerHTML = lives;
+			if (lives <= 0) {
+				alert("YOU LOSE");
+			}
+		}
+
+	}
+	if (correctGuesses === computerChoice.length) {
+			alert("YOU WIN");
+		}
+
+  </script>
+	
+
+</body>
+</html>
