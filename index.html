@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Hangman Game</title>
+  	<style>
+  		#Lives {
+  			font-size: 20;
+  		}
+	</style>
 </head>
 <body>
 
@@ -10,8 +15,8 @@
   <hr>
 
 
-  <div>Guesses Left:  <span id="Lives"></span></div>
-  <div id="mydiv"></div>
+  <div class="Game"><h2>Guesses Left:  </h2><span style= "font-size: 30px;"  id="Lives"></span></div>
+  <div class="Game"><h2>Letters Guessed:   </h2><span id="mydiv"></div>
   <div id="word"></div>
   <div id="correct"></div>
 
@@ -48,7 +53,8 @@
 			alert("Not a valid input");
 		}
 		else {
-			letterTyped.innerHTML = guess;
+			incorrect.push(guess);
+			letterTyped.innerHTML = incorrect;
 		}
 
 		if (computerChoice.indexOf(guess) != -1) {
@@ -58,7 +64,7 @@
 					words.innerHTML = blank;
 					correctGuesses++;
 					correctness.innerHTML = correctGuesses;
-					console.log(correctGuesses);
+					//console.log(correctGuesses);
 				}				
 			}
 		}
@@ -69,11 +75,13 @@
 				alert("YOU LOSE");
 			}
 		}
-
-	}
-	if (correctGuesses === computerChoice.length) {
+		if (correctGuesses === computerChoice.length) {
 			alert("YOU WIN");
 		}
+
+	}
+	console.log(correctGuesses);
+	
 
   </script>
 	
