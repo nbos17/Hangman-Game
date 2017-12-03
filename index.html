@@ -17,8 +17,11 @@
 
   <div class="Game"><h2>Guesses Left:  </h2><span style= "font-size: 30px;"  id="Lives"></span></div>
   <div class="Game"><h2>Letters Guessed:   </h2><span id="mydiv"></div>
-  <div id="word"></div>
+  <div class="Game"><h2>Word:  </h2><span style= "font-size: 30px;" id="word"></span></div>
   <div id="correct"></div>
+  <div class="win">Hangman Challenge</div>
+  <button id="begin">Start</button>
+  <button id="reset" onclick="reset()">Reset</button>
 
 <!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
   <script type="text/javascript">
@@ -28,6 +31,7 @@
     var letterTyped = document.getElementById("mydiv");
     var score = document.getElementById("Lives");
     var correctness = document.getElementById("correct");
+    var winner = document.getElementById("win");
 
 
     //declare variables
@@ -37,50 +41,76 @@
     score.innerHTML = lives;
     var correctGuesses = 0;
 	var userGuess = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-	var wordList= ["met", "horses", "help"];
+	var wordList= ["met", "horses", "help", "misses"];
+	var wins = 0;
+	var computerChoice;
 
 	//create blanks for random word
-	var rand = wordList[Math.floor(Math.random() * wordList.length)];
-	var computerChoice = rand.split("");
-    	for (i = 0; i < computerChoice.length; i++ ) {
-    		blank.push(" __ ");
-    		words.innerHTML = blank;
-    	}   
+	//function newWord() {
+		var rand = wordList[Math.floor(Math.random() * wordList.length)];
+		var computerChoice = rand.split("");
+	    	for (i = 0; i < computerChoice.length; i++ ) {
+	    		blank.push("  ___  ");
+	    		words.innerHTML = blank.join(' ');
+	    	}
+   // }   
+	
 	//check user guess against computer function
-	document.onkeyup = function(event) {
-		var guess = event.key; 
-		if (userGuess.indexOf(guess) <= -1) {
-			alert("Not a valid input");
-		}
-		else {
-			incorrect.push(guess);
-			letterTyped.innerHTML = incorrect;
-		}
-
-		if (computerChoice.indexOf(guess) != -1) {
-			for (var j = 0; j < computerChoice.length; j++) {
-				if (computerChoice[j] === guess) {
-					blank [j] = guess;
-					words.innerHTML = blank;
-					correctGuesses++;
-					correctness.innerHTML = correctGuesses;
-					//console.log(correctGuesses);
-				}				
+	document.getElementById("begin").onclick = playGame();
+	//document.getElementById("reset").onclick = reset();
+	function playGame() {
+		document.onkeyup = function(event) {
+			//newWord();
+			var guess = event.key; 
+			if (userGuess.indexOf(guess) <= -1) {
+				alert("Not a valid input");
 			}
-		}
-		else {
-			lives--;
-			score.innerHTML = lives;
-			if (lives <= 0) {
-				alert("YOU LOSE");
+			else {
+				incorrect.push(guess);
+				letterTyped.innerHTML = incorrect;
 			}
-		}
-		if (correctGuesses === computerChoice.length) {
-			alert("YOU WIN");
-		}
 
+			if (computerChoice.indexOf(guess) != -1) {
+				for (var j = 0; j < computerChoice.length; j++) {
+					if (computerChoice[j] === guess) {
+						blank [j] = guess;
+						words.innerHTML = blank.join(' ');
+						//correctness.innerHTML = correctGuesses;
+						correctGuesses++;
+					}				
+				}
+			}
+			else {
+				lives--;
+				score.innerHTML = lives;
+				if (lives <= 0) {
+					alert("YOU LOSE");
+				}
+			}
+			
+		}
 	}
+
 	console.log(correctGuesses);
+	//wins function
+	function gameOver() {
+		if (correctGuesses >= computerChoice.length) {
+			wins++;
+			winner.innerHTML = wins;		
+		}
+	}
+	//reset function
+	function reset() {
+		console.log("Hello");
+		lives = 10;
+		score.innerHTML = lives;
+		incorrect = [];
+	}
+
+	
+
+
+
 	
 
   </script>
