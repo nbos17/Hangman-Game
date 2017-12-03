@@ -20,7 +20,7 @@
   <div class="Game"><h2>Word:  </h2><span style= "font-size: 30px;" id="word"></span></div>
   <div id="correct"></div>
   <div class="win">Hangman Challenge</div>
-  <button id="begin">Start</button>
+  <button id="begin" onclick="playGame()">Start</button>
   <button id="reset" onclick="reset()">Reset</button>
 
 <!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
@@ -43,24 +43,22 @@
 	var userGuess = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
 	var wordList= ["met", "horses", "help", "misses"];
 	var wins = 0;
-	var computerChoice;
+	var computerChoice = [];
 
-	//create blanks for random word
-	//function newWord() {
-		var rand = wordList[Math.floor(Math.random() * wordList.length)];
-		var computerChoice = rand.split("");
-	    	for (i = 0; i < computerChoice.length; i++ ) {
-	    		blank.push("  ___  ");
-	    		words.innerHTML = blank.join(' ');
-	    	}
-   // }   
+	// //create blanks for random word
+	// 	var rand = wordList[Math.floor(Math.random() * wordList.length)];
+	// 	var computerChoice = rand.split("");
+	//     	for (i = 0; i < computerChoice.length; i++ ) {
+	//     		blank.push("  ___  ");
+	//     		words.innerHTML = blank.join(' ');
+	//     	}   
 	
 	//check user guess against computer function
 	document.getElementById("begin").onclick = playGame();
 	//document.getElementById("reset").onclick = reset();
 	function playGame() {
+		newWord();
 		document.onkeyup = function(event) {
-			//newWord();
 			var guess = event.key; 
 			if (userGuess.indexOf(guess) <= -1) {
 				alert("Not a valid input");
@@ -68,25 +66,27 @@
 			else {
 				incorrect.push(guess);
 				letterTyped.innerHTML = incorrect;
+				console.log(guess);
+				if (computerChoice.indexOf(guess) != -1) {
+					for (var j = 0; j < computerChoice.length; j++) {
+						if (computerChoice[j] === guess) {
+							blank [j] = guess;
+							words.innerHTML = blank.join(' ');
+							//correctness.innerHTML = correctGuesses;
+							correctGuesses++;
+						}				
+					}
+				}
+				else {
+					lives--;
+					score.innerHTML = lives;
+					if (lives <= 0) {
+						alert("YOU LOSE");
+					}
+				}
 			}
 
-			if (computerChoice.indexOf(guess) != -1) {
-				for (var j = 0; j < computerChoice.length; j++) {
-					if (computerChoice[j] === guess) {
-						blank [j] = guess;
-						words.innerHTML = blank.join(' ');
-						//correctness.innerHTML = correctGuesses;
-						correctGuesses++;
-					}				
-				}
-			}
-			else {
-				lives--;
-				score.innerHTML = lives;
-				if (lives <= 0) {
-					alert("YOU LOSE");
-				}
-			}
+			
 			
 		}
 	}
@@ -101,12 +101,26 @@
 	}
 	//reset function
 	function reset() {
-		console.log("Hello");
+		console.log(computerChoice);
+		computerChoice.length = 0;
+		console.log(computerChoice);
+		newWord();
+		console.log(computerChoice);
 		lives = 10;
 		score.innerHTML = lives;
 		incorrect = [];
+		word.innerHTML = blank.join(' ');
+		letterTyped.innerHTML = incorrect;
 	}
 
+	function newWord() {
+	var rand = wordList[Math.floor(Math.random() * wordList.length)];
+			computerChoice = rand.split("");
+	    	for (i = 0; i < computerChoice.length; i++ ) {
+	    		blank.push("  ___  ");
+	    		words.innerHTML = blank.join(' ');
+	    	} 
+	} 
 	
 
 
