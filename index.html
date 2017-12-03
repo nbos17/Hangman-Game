@@ -54,7 +54,7 @@
 	//     	}   
 	
 	//check user guess against computer function
-	document.getElementById("begin").onclick = playGame();
+	//document.getElementById("begin").onclick = playGame();
 	//document.getElementById("reset").onclick = reset();
 	function playGame() {
 		newWord();
@@ -101,15 +101,12 @@
 	}
 	//reset function
 	function reset() {
-		console.log(computerChoice);
 		computerChoice.length = 0;
-		console.log(computerChoice);
-		newWord();
-		console.log(computerChoice);
 		lives = 10;
 		score.innerHTML = lives;
 		incorrect = [];
-		word.innerHTML = blank.join(' ');
+		blank.length = 0;
+		word.innerHTML = " ";
 		letterTyped.innerHTML = incorrect;
 	}
 
