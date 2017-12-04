@@ -57,31 +57,45 @@
 			else {
 				incorrect.push(guess);
 				letterTyped.innerHTML = incorrect;
+				// for (var i = 0; i < incorrect.length; i++) {
+				// 	if (incorrect.indexOf(guess) != -1) {
+				// 		alert("You already guessed that");
+				// 	}
+				// }
+				if ((incorrect.indexOf(guess) > -1) && (blank.indexOf(guess) > -1)) {
+						alert("already guess");
+						incorrect.splice(-1, 1);
+						console.log(incorrect);
+						//correctGuesses--;
+					}
+				
+				else if (computerChoice.indexOf(guess) != -1) {
+								for (var j = 0; j < computerChoice.length; j++) {
+									if (computerChoice[j] === guess) {
+										blank [j] = guess;
+										words.innerHTML = blank.join(' ');
+										correctGuesses++;
+										gameOver();
+										//reset();
+									}				
+								}
+							}
+							else {
+								lives--;
+								score.innerHTML = lives;
+								if (lives <= 0) {
+									alert("YOU LOSE");
+									//reset();
+								}
+							}
+				}
 				//console.log(guess);
-
-				if (computerChoice.indexOf(guess) != -1) {
-					for (var j = 0; j < computerChoice.length; j++) {
-						if (computerChoice[j] === guess) {
-							blank [j] = guess;
-							words.innerHTML = blank.join(' ');
-							correctGuesses++;
-							gameOver();
-						}				
-					}
-				}
-				else {
-					lives--;
-					score.innerHTML = lives;
-					if (lives <= 0) {
-						alert("YOU LOSE");
-					}
-				}
+			
 			}
-
-			
-			
 		}
-	}
+	
+
+
 
 	//wins function
 	function gameOver() {
@@ -89,6 +103,7 @@
 			wins++;
 			winner.innerHTML = wins;		
 		}
+		//reset();
 	}
 	//reset function
 	function reset() {
