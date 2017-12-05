@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <title>Hangman Game</title>
   	<style>
+  	body {
+  		font-family: sans-serif;
+  	}
 
   	#firstSection {
   		border-style: solid;
@@ -22,6 +25,13 @@
   		font-size: 50px;
   		font-weight: bold;
   	}
+  	.Game {
+  		margin-bottom: 10px;
+  	}
+  	#myDiv {
+  		padding-bottom: 10px;
+  	}
+
 
 	</style>
 </head>
@@ -35,20 +45,19 @@
 	<div class="container">
 		<section id="firstSection">
 			<div class="Game"><h2>Guesses Left:  </h2><span style= "font-size: 30px;"  id="Lives"></span></div>
-		 	<div class="Game"><h2>Letters Guessed:   </h2><span id="mydiv"></span></div>
+		 	<div class="Game" id="myDiv"><h2>Letters Guessed:   </h2><span style="font-size: 30px;" id="lettersGuessed"></span></div>
 		  	<div class="Game"><h2>Word:  </h2><span style= "font-size: 30px;" id="word"></span></div>
-		  	<div id="correct"></div>
-		  	<br>
 		  	<div class="Game"><h2>Wins</h2><span id="win" style= "font-size: 30px;"></span></div>
+		  	<!-- <div class="Game"><h2>Losses<span id="loss" style="font-size: 30px;"></span></div> -->
 		</section>
 
   <script type="text/javascript">
 
     //write to HTML divs
     var words = document.getElementById("word");
-    var letterTyped = document.getElementById("mydiv");
+    var letterTyped = document.getElementById("lettersGuessed");
     var score = document.getElementById("Lives");
-    var correctness = document.getElementById("correct");
+    var loser = document.getElementById("loss");
     var winner = document.getElementById("win");
 
 
@@ -71,7 +80,7 @@
 		var guess = event.key; 
 		if (userGuess.indexOf(guess) > -1 ) {
 			if ((incorrect.indexOf(guess) > -1) || (blank.indexOf(guess) > -1)) {
-				alert("You already guessed that");
+				console.log("You already guessed that");
 			}
 			else {
 				incorrect.push(guess);
@@ -113,11 +122,14 @@
 		}
 	}
 
+	//lose Game function
 	function loseGame() {
 		if (lives <= 0) {
 			alert("You Lose");
 			lives = 10;
 			score.innerHTML = lives;
+			// losses++;
+			// loser.innerHTML = losses;
 			reset();
 		}
 	}
