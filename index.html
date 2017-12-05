@@ -4,27 +4,44 @@
   <meta charset="UTF-8">
   <title>Hangman Game</title>
   	<style>
-  		#Lives {
-  			font-size: 20;
-  		}
+
+  	#firstSection {
+  		border-style: solid;
+  		border-width: 2px;
+  		border-color: black;
+  	}
+  	header {
+  		text-align: center;
+  	}
+  	.container {
+  		width: 100%;
+  		margin: 0 auto;
+  		text-align: center;
+  	}
+  	h1 {
+  		font-size: 50px;
+  		font-weight: bold;
+  	}
+
 	</style>
 </head>
 <body>
 
-  <h1>Hangman</h1>
-  <hr>
+	<header>
+	  <h1>Hangman</h1>
+	  <h3>Press Any Key To Play</h3>
+	</header>
 
+	<div class="container">
+		<section id="firstSection">
+			<div class="Game"><h2>Guesses Left:  </h2><span style= "font-size: 30px;"  id="Lives"></span></div>
+		 	<div class="Game"><h2>Letters Guessed:   </h2><span id="mydiv"></span></div>
+		  	<div class="Game"><h2>Word:  </h2><span style= "font-size: 30px;" id="word"></span></div>
+		  	<div id="correct"></div>
+		  	<br>
+		  	<div class="Game"><h2>Wins</h2><span id="win" style= "font-size: 30px;"></span></div>
+		</section>
 
-  <div class="Game"><h2>Guesses Left:  </h2><span style= "font-size: 30px;"  id="Lives"></span></div>
-  <div class="Game"><h2>Letters Guessed:   </h2><span id="mydiv"></span></div>
-  <div class="Game"><h2>Word:  </h2><span style= "font-size: 30px;" id="word"></span></div>
-  <div id="correct"></div>
-  <br>
-  <div class="win"><h2>Wins</h2><span id="win" style= "font-size: 30px;"></span></div>
-  <!-- <button id="begin" onclick="playGame()">Start</button> -->
-  <button id="reset" onclick="reset()">New Word</button>
-
-<!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
   <script type="text/javascript">
 
     //write to HTML divs
@@ -41,70 +58,70 @@
     var lives = 10;
     score.innerHTML = lives;
     var correctGuesses = 0;
-	var userGuess = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-	var wordList= ["met", "horses", "help", "misses", "deserve"];
+	var userGuess = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",];
+	var wordList= ["laptop", "javascript", "minnesota", ];
 	var wins = 0;
+	var losses = 0;
 	var computerChoice = [];
 
 
-	function playGame() {
-		newWord();
-		document.onkeyup = function(event) {
-			var guess = event.key; 
-			if (userGuess.indexOf(guess) <= -1) {
-				alert("Not a valid input");
+
+	newWord();
+	document.onkeyup = function(event) {
+		var guess = event.key; 
+		if (userGuess.indexOf(guess) > -1 ) {
+			if ((incorrect.indexOf(guess) > -1) || (blank.indexOf(guess) > -1)) {
+				alert("You already guessed that");
 			}
 			else {
 				incorrect.push(guess);
 				letterTyped.innerHTML = incorrect;
-				// for (var i = 0; i < incorrect.length; i++) {
-				// 	if (incorrect.indexOf(guess) != -1) {
-				// 		alert("You already guessed that");
-				// 	}
-				// }
-				if ((incorrect.indexOf(guess) > -1) && (blank.indexOf(guess) > -1)) {
-						alert("already guess");
-						incorrect.splice(-1, 1);
-						console.log(incorrect);
-						//correctGuesses--;
+				if (computerChoice.indexOf(guess) > -1 ) {
+					for (var j = 0; j < computerChoice.length; j++) {
+						if (computerChoice[j] === guess) {
+							blank [j] = guess;
+							words.innerHTML = blank.join(' ');
+							correctGuesses++;
+							winGame();
+						}				
 					}
-				
-				else if (computerChoice.indexOf(guess) != -1) {
-								for (var j = 0; j < computerChoice.length; j++) {
-									if (computerChoice[j] === guess) {
-										blank [j] = guess;
-										words.innerHTML = blank.join(' ');
-										correctGuesses++;
-										gameOver();
-										//reset();
-									}				
-								}
-							}
-							else {
-								lives--;
-								score.innerHTML = lives;
-								if (lives <= 0) {
-									alert("YOU LOSE");
-									//reset();
-								}
-							}
 				}
-				//console.log(guess);
-			
+
+				else {
+					lives--;
+					score.innerHTML = lives;
+					loseGame();
+				}
 			}
 		}
+		else {
+			alert("Invalid Guess");
+		}
+		
+	}
+
 	
 
 
 
 	//wins function
-	function gameOver() {
+	function winGame() {
 		if (correctGuesses >= computerChoice.length) {
 			wins++;
-			winner.innerHTML = wins;		
+			winner.innerHTML = wins;
+			reset();		
 		}
-		//reset();
 	}
+
+	function loseGame() {
+		if (lives <= 0) {
+			alert("You Lose");
+			lives = 10;
+			score.innerHTML = lives;
+			reset();
+		}
+	}
+
 	//reset function
 	function reset() {
 		computerChoice.length = 0;
@@ -115,7 +132,7 @@
 		word.innerHTML = " ";
 		letterTyped.innerHTML = incorrect;
 		correctGuesses = 0;
-		playGame();
+		newWord();
 	}
 
 	// Generate New Word Function
